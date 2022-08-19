@@ -22,28 +22,35 @@
 
 ## 🖥︎실행 화면
  * 메뉴 선택
+   - 사용자로부터 메뉴를 입력받음
   <img width="593" alt="메뉴창" src="https://user-images.githubusercontent.com/57447946/185570736-22a521d9-22f8-4e86-86a1-2221cfee69be.png">
-  - 사용자로부터 메뉴를 입력받음
+  
 
  * 게임 시작
-  <img width="593" alt="게임시작" src="https://user-images.githubusercontent.com/57447946/185571128-3b54ed2b-317b-4b7c-8a9c-2b84fca43e62.png">
   - 입력해야하는 형식 출력 및 받은 입력 저장
+  <img width="593" alt="게임시작" src="https://user-images.githubusercontent.com/57447946/185571128-3b54ed2b-317b-4b7c-8a9c-2b84fca43e62.png">
+  <br>
   
  * 입력 유효성 검사 및 판정
-  <img width="593" alt="사용자 입력처리" src="https://user-images.githubusercontent.com/57447946/185572864-a1c31758-61c2-4512-ae72-a115c06261f6.png">
   - 사용자로부터 받은 입력이 1~9사이의 유효한 숫자 3개라면 스트라이크·볼 판정, 남은 횟수 출력
   - 사용자로부터 받은 입력이 문자, 범위 밖의 숫자, 3개가 아닌 숫자라면 재입력 메시지 출력
+  <img width="593" alt="사용자 입력처리" src="https://user-images.githubusercontent.com/57447946/185572864-a1c31758-61c2-4512-ae72-a115c06261f6.png">
+   <br>
 
  * 게임 결과 출력
+   - 사용자가 3 스트라이크를 달성했을 경우 사용자 승리 메시지 출력 및 메뉴 선택창 이동
   <img width="593" alt="사용자승리" src="https://user-images.githubusercontent.com/57447946/185570734-936a4ef9-827d-4018-9640-e1eae8e10809.png">
-  - 사용자가 3 스트라이크를 달성했을 경우 사용자 승리 메시지 출력 및 메뉴 선택창 이동
-  
-  <img width="593" alt="컴퓨터승리" src="https://user-images.githubusercontent.com/57447946/185570730-841bc5cf-ad58-45eb-9755-9be0837cbff3.png">
+  <br>
+
   - 사용자가 남은 기회를 모두 소진했을 경우 컴퓨터 승리 메시지 출력 및 메뉴 선택창 이동
+  <img width="593" alt="컴퓨터승리" src="https://user-images.githubusercontent.com/57447946/185570730-841bc5cf-ad58-45eb-9755-9be0837cbff3.png">
+  <br>
 
  * 게임 종료
+  - 게임 종료 메뉴 입력 시 프로그램 종료
   <img width="593" alt="게임종료" src="https://user-images.githubusercontent.com/57447946/185570723-7f0b8821-937b-4cb9-a47f-7b366e1f46ff.png">
-  - 게임 종료 메뉴 입력 시 
+  <br>
+
 --- 
 
 ## 😧트러블 슈팅
