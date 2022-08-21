@@ -54,25 +54,113 @@
 --- 
 
 ## 😧트러블 슈팅
-1. 사용자의 입력이 유효한지 판단 하는 함수 설계
- * 코드 구성 
+1. 사용자의 입력을 받는 함수와 입력의 유효성을 검토하는 함수를 구분되게 변경
+> 변경 사유 : 함수에 들여쓰기 2회초과와 함수형 프로그래밍을 위한 기능 구분
+   
+* 기존 코드
 ``` swift
-    func checkNumber(_ userInput: String?) -> Array<Int>? {
-        guard let userInput = userInput else { return nil }
+func getUserNumber() -> Array<Int> {
+     print("숫자 3개를 띄어쓰기로 구분해주세요.\n중복숫자는 허용하지 않습니다")
+     print("입력 : ", terminator: "")
+     var userNumbers = [Int]()
 
-        let userInputArr = userInput.split(separator: " ")
-        if userInputArr.count != 3 { return nil }
+     if let userNumber = readLine()?.split(separator: " ") {
+         if userNumber.count == 3 {
+             if let userNumber1 = Int(userNumber[0]) {
+                 if userNumber1 > 0 && userNumber1 < 10 {
+                     userNumbers.append(userNumber1)
+                 }
+             }
+             if let userNumber2 = Int(userNumber[1]) {
+                 if userNumber2 > 0 && userNumber2 < 10 {
+                     userNumbers.append(userNumber2)
+                 }
+             }
+             if let userNumber3 = Int(userNumber[2]) {
+                 if userNumber3 > 0 && userNumber3 < 10 {
+                     userNumbers.append(userNumber3)
+                 }
+             }
+         }
+     }
+     if Set(userNumbers).count != 3 {
+         userNumbers.removeAll()
+     }
+     if userNumbers.count != 3 {
+         print("입력이 잘못되었습니다.")
+     }
 
-        let userNumber = userInputArr.compactMap{ Int($0) }.filter { $0 > 0 && $0 < 10 }
-        if Set(userNumber).count != 3 { return nil }
+     return userNumbers
+     let userInput = readLine()?.split(separator: " ")
 
-        return userNumber
+     return userInput
+ }
+ ```
+
+ * 변경 구성 
+``` swift
+func getUserNumber() -> Array<Int> {
+    while true {
+        print("숫자 3개를 띄어쓰기로 구분해주세요.\n중복숫자는 허용하지 않습니다.")
+        print("입력 : ", terminator: "")
+        let input = readLine()
+
+        if let userNumber = checkNumber(input) {
+            return userNumber
+        }
+        print("입력이 잘못되었습니다.")
     }
-```
-   - 숫자 범위를 판단하는 부분을 다시 확인하면 구현 로직 변경
-   - 고차함수를 활용해 직관적인 코드로 수정
+}
 
-2. [Swift API Design Guideline](https://www.swift.org/documentation/api-design-guidelines/)에 따른 변수명 설정 및 코드 컨벤션 수정 
+func checkNumber(_ userInput: String?) -> Array<Int>? {
+    guard let userInput = userInput else { return nil }
+
+    let userInputArr = userInput.split(separator: " ")
+    if userInputArr.count != 3 { return nil }
+
+    let userNumber = userInputArr.compactMap{ Int($0) }.filter { $0 > 0 && $0 < 10 }
+    if Set(userNumber).count != 3 { return nil }
+
+    return userNumber
+}
+```
+   - 고차함수를 활용해 직관적인 코드로 수정
+      - 형변환을 Set으로 해줌으로써 중복되는 값을 제거 (Set에는 중복된 값이 들어갈 수 없음)
+      - .compactMap 를 사용하여 정수값만 입력되게 변경
+      - .filter 를 사용하여 입력 가능한 정수값을 설정
+   - guard let & if let 을 사용하여 Optional 처리
+   - :star: 유효성에 맞는 값만 남을 때까지 필터하는 방식 -> 유효성에 맞지 않는 값만 리턴시키는 방식으로 변경
+
+2. 스트라이크 & 볼을 판정하는 함수 구현
+* 구현 코드
+``` swift
+func compareStikeBall(_ randomNumber: Array<Int>, _ userNumber: Array<Int>) -> Bool {
+    var strike = 0
+    var ball = 0
+
+    userNumber.forEach {
+        if randomNumber.contains($0) {
+            ball += 1
+        }
+    }
+    strike = zip(randomNumber, userNumber).compactMap {
+        $0.0 == $0.1 ? true : nil
+    }.count
+    ball -= strike
+
+    print("\(strike) 스트라이크, \(ball) 볼")
+    return strike == 3 ? true : false
+}
+```
+   - 고차함수를 활용해 직관적인 코드 적용
+      - .forEach : 배열 안에 있는 모든 값을 순차적으로 확인
+      - .contains : 배열 안에 해당 값이 포함되었는지 확인
+      - .zip : 좌측에 기입된 배열과 우측에 기입된 배열의 같은 순번에 위치한 값을 확인하여 동일위치라면 True값 출력, 다르다면 nil 출력
+      - .count : 배열에 포함된 값이 몇개인지 출력
+   - [조건 ? 맞을경우 : 틀릴경우]로 if문 대체 가능
+   - 매개변수 앞에 _(언더바)를 설정해둘 경우 매개변수명을 적지않고 원하는 값만 넣어줄 수 있음
+
+3. [Swift API Design Guideline](https://www.swift.org/documentation/api-design-guidelines/)에 따른 변수명 설정 및 코드 컨벤션 수정 
    - 직관적이고 효율적인 코드 설계에 어려움을 느꼈지만 리뷰어의 피드백을 통해 함수명을 동사, 변수명을 명사로 변경 하는 등의 컨벤션 수정
    - Ex) menu() -> selectMenu()
 
@@ -80,3 +168,4 @@
 - [Swift API Design Guideline](https://www.swift.org/documentation/api-design-guidelines/)
 - [Swift Language Guide - Optional, nil, Optional Binding](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html)
 - [Swift Language Guide - Collection Types](https://docs.swift.org/swift-book/LanguageGuide/CollectionTypes.html)
+- [Apple Develop Documentation - Optional](https://developer.apple.com/documentation/swift/optional)
